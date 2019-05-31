@@ -1,24 +1,35 @@
-import React from 'react';
-import logo from './logo.svg';
+import React, { useState } from 'react';
 import './App.css';
 
+import DatumField from './components/DatumField';
+import Kalender from './components/Kalender/Kalender';
+import { JAREN } from './constants/index';
+import { maakJaren, maakMaanden } from './utils';
+
 function App() {
+  const [geselecteerdeDatum, setGeselecteerdeDatum] = useState('1-1-1995');
+  const [open, setOpen] = useState(true);
+
+  const maanden = maakMaanden();
+  const jaren = maakJaren(...JAREN);
+
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <p>Kalender - Hypotheekbond.</p>
+      <DatumField
+        geselecteerdeDatum={geselecteerdeDatum}
+        toggleKalender={() => setOpen(!open)}
+      />
+      {open && (
+        <Kalender
+          maanden={maanden}
+          jaren={jaren}
+          pickEenDatum={datum => {
+            setGeselecteerdeDatum(datum);
+            setOpen(false);
+          }}
+        />
+      )}
     </div>
   );
 }
