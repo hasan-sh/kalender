@@ -25,3 +25,4 @@ export const DAGEN = {
   zaterdag: 7,
 };
 
+export const DATUM_DELIMITER = '-';

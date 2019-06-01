@@ -1,17 +1,18 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import './App.css';
 
 import DatumField from './components/DatumField';
 import Kalender from './components/Kalender/Kalender';
-import { JAREN } from './constants/index';
-import { maakJaren, maakMaanden } from './utils';
+import { maakKalenderJaren } from './utils';
 
 function App() {
-  const [geselecteerdeDatum, setGeselecteerdeDatum] = useState('1-1-1995');
-  const [open, setOpen] = useState(true);
+  const [kalender, setKalender] = useState([]);
+  const [geselecteerdeDatum, setGeselecteerdeDatum] = useState('');
+  const [open, setOpen] = useState(false);
 
-  const maanden = maakMaanden();
-  const jaren = maakJaren(...JAREN);
+  useEffect(() => {
+    setKalender(maakKalenderJaren());
+  }, []);
 
   return (
     <div className="App">
@@ -22,8 +23,8 @@ function App() {
       />
       {open && (
         <Kalender
-          maanden={maanden}
-          jaren={jaren}
+          kalender={kalender}
+          geselecteerdeDatum={geselecteerdeDatum}
           pickEenDatum={datum => {
             setGeselecteerdeDatum(datum);
             setOpen(false);
