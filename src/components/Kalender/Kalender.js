@@ -1,33 +1,69 @@
 import React, { useState } from 'react';
 import KalenderBody from './KalenderBody';
 import KalenderHeader from './KalenderHeader';
+import { DATUM_DELIMITER } from '../../constants';
+import { getJaarIndex } from '../../utils';
 
-export default function Kalender({ maanden, jaren, pickEenDatum, open }) {
-  const [maand, setMaand] = useState(maanden[0]);
-  const [jaar, setJaar] = useState(jaren[0]);
+export default function Kalender({
+  kalender,
+  pickEenDatum,
+  geselecteerdeDatum,
+  open,
+}) {
+  let [
+    geselecteerdeMaandIndex,
+    geselecteerdeJaarIndex,
+    geselecteerdeJaar,
+    geselecteerdeDag,
+  ] = [1, 0];
+
+  if (geselecteerdeDatum) {
+    [
+      geselecteerdeDag,
+      geselecteerdeMaandIndex,
+      geselecteerdeJaar,
+    ] = geselecteerdeDatum.split(DATUM_DELIMITER).map(x => Number(x));
+    geselecteerdeJaarIndex = getJaarIndex(kalender, geselecteerdeJaar);
+  }
+
+  const [maand, setMaand] = useState(
+    kalender[geselecteerdeJaarIndex][geselecteerdeMaandIndex - 1]
+  );
+  const [jaar, setJaar] = useState(kalender[geselecteerdeJaarIndex]);
 
   function onChange({ target: { value, name } }) {
     if (name) {
-      const selectedMaand = maanden[value];
+      const selectedMaand = jaar[value];
       setMaand(selectedMaand);
     } else {
-      setJaar(value);
+      const jaarIndex = getJaarIndex(kalender, value);
+      setJaar(kalender[jaarIndex]);
+      setMaand(kalender[jaarIndex][0]);
     }
   }
 
-  function onDagClick(dag) {
-    let datum = `${dag}-${maand[0].maandIndex}-${jaar}`;
+  function onDagClick(datum) {
     pickEenDatum(datum);
   }
   return (
     <div className="inputContainer">
       <KalenderHeader
-        jaren={jaren}
+        jaren={kalender}
         jaar={jaar}
         maand={maand}
+        geselecteerdeDatum={geselecteerdeDatum}
         onChange={onChange}
       />
-      <KalenderBody maand={maand} onDagClick={onDagClick} />
+      <KalenderBody
+        maand={maand}
+        jaar={jaar}
+        geselecteerdeDatum={{
+          dag: geselecteerdeDag,
+          maand: geselecteerdeMaandIndex,
+          jaar: geselecteerdeJaar,
+        }}
+        onDagClick={onDagClick}
+      />
     </div>
   );
 }
