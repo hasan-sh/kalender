@@ -6,7 +6,6 @@ export default function Display({
   kalender,
   geselecteerdeDatum,
 }) {
-    console.log(geselecteerdeDatum)
 
   return (
     <div className="display">

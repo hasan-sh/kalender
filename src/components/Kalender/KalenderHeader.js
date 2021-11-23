@@ -1,5 +1,5 @@
 import React from 'react';
-import { MAANDEN } from '../../constants';
+import { MAANDEN, DATE } from '../../constants';
 
 export default function KalenderHeader({
   onChange,
@@ -16,6 +16,7 @@ export default function KalenderHeader({
         value={ditMaand[0].maandIndex - 1}
         onChange={onChange}
       >
+        {/* {MAANDEN.map((maand, i) => i <= DATE.getMonth() && ( */}
         {MAANDEN.map((maand, i) => (
           <option key={i} value={i}>
             {maand}

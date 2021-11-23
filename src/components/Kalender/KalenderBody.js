@@ -1,5 +1,5 @@
 import React from 'react';
-import { DAGEN, DATUM_DELIMITER } from '../../constants/index';
+import { DAGEN, DATE, DATUM_DELIMITER } from '../../constants/index';
 
 export default function KalenderBody({
   maand,
@@ -13,9 +13,11 @@ export default function KalenderBody({
           {dag.slice(0, 2)}
         </div>
       ))}
-      {maand.map((dag, i) =>
+      {maand.map((dag, i) => {
+        const overToday = i > DATE.getDate() && maand[0].maandIndex === DATE.getMonth() + 1
+        const overMonth = maand[0].maandIndex > DATE.getMonth() + 1
         // the first element is preserved for the current month.
-        i === 0 ? null : (
+        return (i === 0 ? null : (
           <div
             key={i}
             className="weekDay"
@@ -26,9 +28,12 @@ export default function KalenderBody({
                 geselecteerdeDatum.maand === maand[0].maandIndex &&
                 geselecteerdeDatum.jaar === maand[0].jaar &&
                 'gray',
+              color: (overToday || overMonth) && "#ffffff61",
+              cursor: (overToday || overMonth) && "no-drop",
             }}
             title={dag.dag}
             onClick={() => {
+              if (overToday || overMonth) return
               const { maandIndex, jaar } = maand[0];
               const datum = [i, maandIndex, jaar].join(DATUM_DELIMITER);
               onDagClick(datum);
@@ -37,6 +42,7 @@ export default function KalenderBody({
             {i}
           </div>
         )
+        )}
       )}
     </div>
   );
