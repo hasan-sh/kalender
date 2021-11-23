@@ -8,14 +8,13 @@ export default function Kalender({
   kalender,
   pickEenDatum,
   geselecteerdeDatum,
-  open,
 }) {
   let [
     geselecteerdeMaandIndex,
     geselecteerdeJaarIndex,
     geselecteerdeJaar,
     geselecteerdeDag,
-  ] = [1, 0];
+  ] = [1, 0, false, false];
 
   if (geselecteerdeDatum) {
     [

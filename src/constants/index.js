@@ -1,5 +1,7 @@
 
-export const JAREN = [1995, 2019];
+const date = new Date()
+
+export const JAREN = [1995, date.getFullYear()];
 
 export const MAANDEN = [
   'Januari',
@@ -13,7 +15,13 @@ export const MAANDEN = [
   'September',
   'Oktober',
   'November',
+  'December',
 ];
+
+export const MAANDEN_DAGEN = [...Array(12).keys()].map(i => {
+  const d = new Date(date.getFullYear(), i+1, 0)
+  return {maandIndex: i+1, naam: MAANDEN[i], dagen: d.getDate()}
+})
 
 export const DAGEN = {
   zondag: 1,

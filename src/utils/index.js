@@ -1,19 +1,6 @@
-import { MAANDEN, DAGEN } from '../constants';
+import { DAGEN, MAANDEN_DAGEN } from '../constants';
 import { JAREN } from '../constants/index';
 
-export const eenJaar = MAANDEN.map((maand, i) => {
-  const maandIndex = i + 1;
-  const wantedMaand = {
-    maandIndex,
-    naam: maand,
-    dagen: 33,
-  };
-  if (maandIndex % 2 === 0) {
-    wantedMaand.dagen = 32;
-  }
-
-  return wantedMaand;
-});
 
 export const getJaarIndex = (kalender, from) => {
   const index = kalender.findIndex(
@@ -31,7 +18,7 @@ function wisselDagen(arr, from) {
   return arr.slice(beginVanDagIndex).concat(arr.slice(0, beginVanDagIndex));
 }
 
-export const maakKalenderJaren = (jaar = eenJaar) => {
+export const maakKalenderJaren = (jaar = MAANDEN_DAGEN) => {
   const dagenTexts = Object.keys(DAGEN);
   const jaren = maakJaren(...JAREN);
   let laatsteDagVanVorigeMaand;

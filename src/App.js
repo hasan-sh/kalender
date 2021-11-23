@@ -3,33 +3,40 @@ import './App.css';
 
 import DatumField from './components/DatumField';
 import Kalender from './components/Kalender/Kalender';
+import Display from './components/Display';
 import { maakKalenderJaren } from './utils';
 
 function App() {
   const [kalender, setKalender] = useState([]);
-  const [geselecteerdeDatum, setGeselecteerdeDatum] = useState('');
-  const [open, setOpen] = useState(false);
+  const date = new Date();
+  const [geselecteerdeDatum, setGeselecteerdeDatum] = useState(`${date.getDate()}-${date.getMonth()+1}-${date.getFullYear()}`);
+  const [open, setOpen] = useState(true);
 
   useEffect(() => {
-    setKalender(maakKalenderJaren());
+    setKalender(maakKalenderJaren().reverse());
   }, []);
 
   return (
     <div className="App">
-      <p>Kalender - Hypotheekbond.</p>
-      <DatumField
-        geselecteerdeDatum={geselecteerdeDatum}
-        toggleKalender={() => setOpen(!open)}
-      />
-      {open && (
-        <Kalender
-          kalender={kalender}
+      <div>
+        <p>Werknemer kalender: </p>
+        <DatumField
           geselecteerdeDatum={geselecteerdeDatum}
-          pickEenDatum={datum => {
-            setGeselecteerdeDatum(datum);
-            setOpen(false);
-          }}
+          toggleKalender={() => setOpen(!open)}
         />
+        {open && kalender.length && (
+          <Kalender
+            kalender={kalender}
+            geselecteerdeDatum={geselecteerdeDatum}
+            pickEenDatum={datum => {
+              setGeselecteerdeDatum(datum);
+              // setOpen(false);
+            }}
+          />
+        )} 
+      </div>
+      {geselecteerdeDatum && (
+        <Display geselecteerdeDatum={geselecteerdeDatum} kalender />
       )}
     </div>
   );
